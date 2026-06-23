@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 interface SentryEvent {
   message: string
   level: 'fatal' | 'error' | 'warning' | 'info' | 'debug'
