@@ -1,0 +1,8 @@
+{
+  "/api/todos": "/todos",
+  "/api/todos/:id": "/todos/:id",
+  "/api/users": "/users",
+  "/api/users/:id": "/users/:id",
+  "/api/tags": "/tags",
+  "/api/tags/:id": "/tags/:id"
+}

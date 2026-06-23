@@ -1,0 +1,13 @@
+{
+  "name": "todo-app-mock",
+  "version": "1.0.0",
+  "description": "Mock backend server for ToDo application",
+  "scripts": {
+    "start": "json-server --watch db.json --routes routes.json --middlewares middlewares/auth.js --port 3000 --host 0.0.0.0",
+    "start:delay": "json-server --watch db.json --routes routes.json --middlewares middlewares/auth.js --port 3000 --delay 500",
+    "reset": "node reset.js"
+  },
+  "dependencies": {
+    "json-server": "^0.17.4"
+  }
+}

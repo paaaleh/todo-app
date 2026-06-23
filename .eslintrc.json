@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "env": {
+    "node": true,
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:vue/vue3-essential",
+    "eslint:recommended",
+    "@vue/eslint-config-typescript"
+  ],
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "error",
+    "vue/component-api-style": ["error", ["script-setup", "composition"]],
+    "vue/define-macros-order": "error",
+    "no-console": "warn"
+  }
+}
