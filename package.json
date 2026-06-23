@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "todo-app",
   "version": "1.0.0",
   "description": "ToDo application built with Vue 3, Quasar and TypeScript",
@@ -6,15 +6,10 @@
   "scripts": {
     "dev": "quasar dev",
     "build": "quasar build",
-    "build:analyze": "vite build --mode production && npx vite-bundle-visualizer",
-    "build:report": "cross-env REPORT=true quasar build",
-    "preview": "vite preview",
     "lint": "eslint --ext .js,.ts,.vue ./src",
-    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "type-check": "vue-tsc --noEmit"
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.0",
@@ -29,18 +24,14 @@
     "@types/node": "^20.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "@vitejs/plugin-vue": "^5.0.0",
     "@vitest/coverage-v8": "^1.0.0",
     "@vue/eslint-config-typescript": "^12.0.0",
     "@vue/test-utils": "^2.4.0",
-    "cross-env": "^7.0.3",
     "eslint": "^8.0.0",
     "eslint-plugin-vue": "^9.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.0.0",
-    "vite-bundle-visualizer": "^1.0.0",
-    "vitest": "^1.0.0",
-    "vue-tsc": "^2.0.0"
+    "vitest": "^1.0.0"
   },
   "engines": {
     "node": "^20 || ^18 || ^16",
