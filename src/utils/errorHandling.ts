@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import type { AppError } from '../types'
 
 export type ErrorSeverity = 'fatal' | 'error' | 'warning' | 'info'
@@ -24,7 +25,6 @@ const SEVERITY_MAP: Record<AppError['kind'], ErrorSeverity> = {
   unknown: 'fatal',
 }
 
-/** Нормализует AppError в единый формат для отображения и логирования */
 export function normalizeAppError(error: AppError): NormalizedError {
   return {
     message: error.message,
@@ -35,7 +35,6 @@ export function normalizeAppError(error: AppError): NormalizedError {
   }
 }
 
-/** Нормализует произвольную ошибку JS */
 export function normalizeUnknownError(err: unknown): NormalizedError {
   const message = err instanceof Error ? err.message : String(err)
   return {
@@ -47,7 +46,6 @@ export function normalizeUnknownError(err: unknown): NormalizedError {
   }
 }
 
-/** Определяет, является ли ошибка сетевой */
 export function isNetworkError(err: unknown): boolean {
   if (!(err instanceof Error)) return false
   return (
@@ -57,14 +55,12 @@ export function isNetworkError(err: unknown): boolean {
   )
 }
 
-/** Логирует ошибку без утечки технических деталей в UI */
 export function logError(context: string, error: unknown): void {
   const timestamp = new Date().toISOString()
   const message = error instanceof Error ? error.message : String(error)
   console.error(`[${timestamp}] [${context}] ${message}`, error)
 }
 
-/** Устанавливает глобальный обработчик необработанных ошибок */
 export function setupGlobalErrorHandlers(
   onError: (message: string, severity: ErrorSeverity) => void,
 ): void {

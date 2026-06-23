@@ -2,8 +2,6 @@ import { apiClient } from './apiClient'
 import type { ApiTodoItem, ApiCreateTodoPayload, ApiUpdateTodoPayload } from './types'
 import type { ITodoItem, TodoCreatePayload, TodoUpdatePayload, TodoId, ApiResult } from '../types'
 
-const CACHE_KEY_PREFIX = '/todos'
-
 function deserialize(item: ApiTodoItem): ITodoItem {
   return {
     id: item.id,
@@ -16,7 +14,6 @@ function deserialize(item: ApiTodoItem): ITodoItem {
 export const todoApiService = {
   async getAll(userId: number): Promise<ApiResult<ITodoItem[]>> {
     try {
-      const cacheKey = `${CACHE_KEY_PREFIX}?userId=${userId}`
       const items = await apiClient.get<ApiTodoItem[]>(
         `/todos?userId=${userId}`,
         undefined,
@@ -39,7 +36,7 @@ export const todoApiService = {
         updatedAt: new Date().toISOString(),
       }
       const item = await apiClient.post<ApiTodoItem>('/todos', body)
-      apiClient.invalidateCache(CACHE_KEY_PREFIX)
+      apiClient.invalidateCache('/todos')
       return { success: true, data: deserialize(item) }
     } catch (err) {
       return { success: false, error: { kind: 'storage', message: (err as Error).message } }
@@ -53,7 +50,7 @@ export const todoApiService = {
         updatedAt: new Date().toISOString(),
       }
       const item = await apiClient.patch<ApiTodoItem>(`/todos/${id}`, body)
-      apiClient.invalidateCache(CACHE_KEY_PREFIX)
+      apiClient.invalidateCache('/todos')
       return { success: true, data: deserialize(item) }
     } catch (err) {
       return { success: false, error: { kind: 'not_found', message: (err as Error).message, id } }
@@ -63,7 +60,7 @@ export const todoApiService = {
   async remove(id: TodoId): Promise<ApiResult<TodoId>> {
     try {
       await apiClient.delete(`/todos/${id}`)
-      apiClient.invalidateCache(CACHE_KEY_PREFIX)
+      apiClient.invalidateCache('/todos')
       return { success: true, data: id }
     } catch (err) {
       return { success: false, error: { kind: 'not_found', message: (err as Error).message, id } }
