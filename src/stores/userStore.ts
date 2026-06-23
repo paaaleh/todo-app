@@ -34,7 +34,6 @@ export const useUserStore = defineStore('user', () => {
   const currentUser = computed<UserProfile | null>(() => stored.value.user)
   const preferences = computed<UserPreferences>(() => stored.value.preferences)
 
-  /** Mock-аутентификация: принимает любые непустые данные */
   async function login(name: string, email: string): Promise<ApiResult<UserProfile>> {
     if (!name.trim() || !email.trim()) {
       return {

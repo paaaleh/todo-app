@@ -40,9 +40,6 @@ jobs:
           VITE_ENABLE_ANALYTICS: 'false'
           VITE_BASE_URL: /todo-app/
 
-      - name: Copy _redirects for SPA routing
-        run: cp public/_redirects dist/spa/_redirects || true
-
       - name: Setup Pages
         uses: actions/configure-pages@v4
 

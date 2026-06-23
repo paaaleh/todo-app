@@ -24,7 +24,7 @@ export const routes: RouteRecordRaw[] = [
           title: 'Настройки',
           requiresAuth: true,
           breadcrumbs: [
-            { label: 'Задачи', to: { name: 'index' } },
+            { label: 'Задачи', to: { name: 'index' as RouteName } },
             { label: 'Настройки' },
           ],
         },

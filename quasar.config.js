@@ -1,6 +1,6 @@
 const { configure } = require('quasar/wrappers')
 
-module.exports = configure(function (ctx) {
+module.exports = configure(function () {
   return {
     eslint: {
       warnings: true,
@@ -19,30 +19,11 @@ module.exports = configure(function (ctx) {
         node: 'node20',
       },
 
-      vueRouterMode: 'history',
+      vueRouterMode: 'hash',
       publicPath: '/todo-app/',
 
       minify: true,
       sourcemap: false,
-
-      vitePlugins: [
-        ['vite-plugin-checker', {
-          typescript: true,
-        }, { server: false }],
-      ],
-
-      extendViteConf(viteConf) {
-        viteConf.build = viteConf.build ?? {}
-        viteConf.build.rollupOptions = {
-          output: {
-            manualChunks: {
-              'vue-vendor': ['vue', 'vue-router', 'pinia'],
-              'quasar-vendor': ['quasar', '@quasar/extras'],
-              'axios-vendor': ['axios'],
-            },
-          },
-        }
-      },
     },
 
     devServer: {
@@ -56,19 +37,5 @@ module.exports = configure(function (ctx) {
     },
 
     animations: [],
-
-    ssr: {
-      pwa: false,
-      prodPort: 3000,
-      middlewares: ['render'],
-    },
-
-    pwa: {
-      workboxMode: 'generateSW',
-      injectPwaMetaTags: true,
-      swFilename: 'sw.js',
-      manifestFilename: 'manifest.json',
-      useCredentials: false,
-    },
   }
 })
