@@ -2,7 +2,7 @@ import type { Router } from 'vue-router'
 import { useUserStore } from '../stores'
 
 export function registerGuards(router: Router): void {
-  router.beforeEach((to, _from) => {
+  router.beforeEach((to) => {
     const userStore = useUserStore()
 
     if (to.meta.requiresAuth && !userStore.isAuthenticated) {

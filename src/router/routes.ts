@@ -8,7 +8,7 @@ export const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        name: 'index' satisfies RouteName,
+        name: 'index' as RouteName,
         component: () => import('../pages/IndexPage.vue'),
         meta: {
           title: 'Список задач',
@@ -18,7 +18,7 @@ export const routes: RouteRecordRaw[] = [
       },
       {
         path: 'settings',
-        name: 'settings' satisfies RouteName,
+        name: 'settings' as RouteName,
         component: () => import('../pages/SettingsPage.vue'),
         meta: {
           title: 'Настройки',
@@ -37,7 +37,7 @@ export const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        name: 'login' satisfies RouteName,
+        name: 'login' as RouteName,
         component: () => import('../pages/LoginPage.vue'),
         meta: {
           title: 'Вход',
@@ -49,7 +49,7 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: '/:pathMatch(.*)*',
-    name: 'not-found' satisfies RouteName,
+    name: 'not-found' as RouteName,
     component: () => import('../pages/NotFoundPage.vue'),
     meta: {
       title: 'Страница не найдена',
