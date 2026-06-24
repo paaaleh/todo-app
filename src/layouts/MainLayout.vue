@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf" :class="uiStore.isDark ? 'bg-dark text-white' : ''">
+  <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -69,8 +69,8 @@
       <router-view />
     </q-page-container>
 
-    <q-footer v-if="uiStore.notifications.length > 0" class="bg-transparent">
-      <div class="q-pa-sm column q-gutter-xs items-end">
+    <q-footer v-if="uiStore.notifications.length > 0" class="bg-transparent q-pa-sm">
+      <div class="column q-gutter-xs items-end">
         <transition-group name="notif">
           <q-banner
             v-for="notif in uiStore.notifications"

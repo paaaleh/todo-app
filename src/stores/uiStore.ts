@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useLocalStorage } from '../composables/useLocalStorage'
+import { Dark } from 'quasar'
 
 export type ThemeMode = 'light' | 'dark'
 
@@ -22,6 +23,8 @@ interface NotificationQueue {
   nextId: number
 }
 
+import { ref } from 'vue'
+
 export const useUiStore = defineStore('ui', () => {
   const stored = useLocalStorage<UiState>('ui_state', {
     theme: 'light',
@@ -37,15 +40,23 @@ export const useUiStore = defineStore('ui', () => {
   const filterPanelVisible = computed<boolean>(() => stored.value.filterPanelVisible)
   const notifications = computed<Notification[]>(() => notificationQueue.value.items)
 
+  function applyTheme(mode: ThemeMode): void {
+    Dark.set(mode === 'dark')
+  }
+
+  function initTheme(): void {
+    applyTheme(stored.value.theme)
+  }
+
   function toggleTheme(): void {
-    stored.value = {
-      ...stored.value,
-      theme: stored.value.theme === 'light' ? 'dark' : 'light',
-    }
+    const next: ThemeMode = stored.value.theme === 'light' ? 'dark' : 'light'
+    stored.value = { ...stored.value, theme: next }
+    applyTheme(next)
   }
 
   function setTheme(mode: ThemeMode): void {
     stored.value = { ...stored.value, theme: mode }
+    applyTheme(mode)
   }
 
   function toggleSidebar(): void {
@@ -86,6 +97,7 @@ export const useUiStore = defineStore('ui', () => {
     sidebarVisible,
     filterPanelVisible,
     notifications,
+    initTheme,
     toggleTheme,
     setTheme,
     toggleSidebar,
