@@ -22,6 +22,9 @@ function serializeToStored(items: ITodoItem[]): StoredTodoItem[] {
   return items.map((item) => ({ ...item, createdAt: item.createdAt.toISOString() }))
 }
 
+const API_URL = import.meta.env.VITE_API_URL
+const USE_API = !!API_URL && API_URL.trim() !== ''
+
 export const useTodoStore = defineStore('todo', () => {
   const uiStore = useUiStore()
   const userStore = useUserStore()
@@ -55,8 +58,12 @@ export const useTodoStore = defineStore('todo', () => {
   const activeCount = computed<number>(() => todos.value.filter((t) => !t.completed).length)
   const completedCount = computed<number>(() => todos.value.filter((t) => t.completed).length)
 
-  /** Загружает задачи с API и синхронизирует с localStorage */
   async function fetchTodos(): Promise<void> {
+    if (!USE_API) {
+      isSynced.value = true
+      return
+    }
+
     const userId = userStore.currentUser?.id
     if (!userId) return
 
@@ -79,29 +86,31 @@ export const useTodoStore = defineStore('todo', () => {
       return false
     }
 
-    const userId = userStore.currentUser?.id
-    if (userId) {
-      isLoading.value = true
-      const result = await todoApiService.create(userId, { title })
-      isLoading.value = false
+    if (USE_API) {
+      const userId = userStore.currentUser?.id
+      if (userId) {
+        isLoading.value = true
+        const result = await todoApiService.create(userId, { title })
+        isLoading.value = false
 
-      if (!result.success) {
-        uiStore.addNotification('error', result.error.message)
-        return false
+        if (!result.success) {
+          uiStore.addNotification('error', result.error.message)
+          return false
+        }
+
+        stored.value = serializeToStored([...todos.value, result.data])
+        uiStore.addNotification('success', 'Задача добавлена')
+        return true
       }
-
-      stored.value = serializeToStored([...todos.value, result.data])
-    } else {
-      stored.value = serializeToStored([...todos.value, validation.data])
     }
 
+    stored.value = serializeToStored([...todos.value, validation.data])
     uiStore.addNotification('success', 'Задача добавлена')
     return true
   }
 
   async function removeTodo(id: TodoId): Promise<boolean> {
-    const userId = userStore.currentUser?.id
-    if (userId) {
+    if (USE_API) {
       isLoading.value = true
       const result = await todoApiService.remove(id)
       isLoading.value = false
@@ -121,8 +130,7 @@ export const useTodoStore = defineStore('todo', () => {
     const todo = todos.value.find((t) => t.id === id)
     if (!todo) return false
 
-    const userId = userStore.currentUser?.id
-    if (userId) {
+    if (USE_API) {
       const result = await todoApiService.update(id, { completed: !todo.completed })
       if (!result.success) {
         uiStore.addNotification('error', result.error.message)
@@ -131,12 +139,12 @@ export const useTodoStore = defineStore('todo', () => {
       stored.value = serializeToStored(
         todos.value.map((t) => (t.id === id ? result.data : t)),
       )
-    } else {
-      stored.value = serializeToStored(
-        todos.value.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
-      )
+      return true
     }
 
+    stored.value = serializeToStored(
+      todos.value.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
+    )
     return true
   }
 
